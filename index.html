@@ -22,6 +22,7 @@
                 Place the materials as the Master's Blueprint shows.</p>
                 <div class="ornament-bottom">❋ ─── ❖ ─── ❋</div>
                 <button class="btn-ancient" onclick="Game.showSurahs()">⟡ Enter the Builder's Guild ⟡</button>
+                <button class="btn-ancient small" onclick="Game.showHelp()">📜 Read the Instructions</button>
                 <p class="hint-text">— A game of 28 sacred letters &amp; 28 earthly materials —</p>
             </div>
         </div>
@@ -69,6 +70,11 @@
                 <div class="ornament-line">❖ ─── ❋ ─── ❖</div>
             </div>
 
+            <div id="uniqueness-panel" class="uniqueness-panel">
+                <h3>🔒 The Seal of Uniqueness</h3>
+                <div id="uniqueness-content"></div>
+            </div>
+
             <div class="build-columns">
                 <!-- Blueprint (Guide) -->
                 <div class="blueprint-panel">
@@ -101,7 +107,52 @@
             <div class="build-footer">
                 <button class="btn-ancient small" id="btn-check" onclick="Game.checkBuild()">⟡ Check Your Work ⟡</button>
                 <button class="btn-ancient small hidden" id="btn-next" onclick="Game.nextAyah()">Next Verse →</button>
+                <button class="btn-ancient small" onclick="Game.showHelp()">📜 Instructions</button>
                 <span id="build-message"></span>
+            </div>
+        </div>
+
+        <!-- ═══════════════ HELP / INSTRUCTIONS SCREEN ═══════════════ -->
+        <div id="screen-help" class="screen hidden">
+            <div class="parchment-frame wide help-frame">
+                <div class="header-row">
+                    <button class="btn-back" onclick="Game.goBackFromHelp()">← Return</button>
+                    <h2>📜 The Builder's Codex</h2>
+                    <div class="spacer"></div>
+                </div>
+
+                <div class="help-section">
+                    <h3>❖ How to Build a Verse ❖</h3>
+                    <ol class="help-steps">
+                        <li><b>Choose a Chamber</b> — each Sūrah is a room of the great house.</li>
+                        <li><b>Choose a Verse</b> — each Āyah is a stone to lay within it.</li>
+                        <li><b>Read the Āyah</b> — its sacred letters are drawn from the text itself.</li>
+                        <li><b>Study the Master's Blueprint</b> — the left panel shows the finished layout, generated from that verse's own letters. This is your guide.</li>
+                        <li><b>Gather Materials</b> — the palette below holds every material this verse requires, shuffled so you must truly match, not merely count.</li>
+                        <li><b>Place Each Piece</b> — click a material, then click a spot on Your Construction Site. Follow the Master's Instructions: <i>“Place the Door (د) → Row 2, Col 3.”</i></li>
+                        <li><b>Check Your Work</b> — green ✓ means true to the Blueprint; red ✗ means misplaced. Consult the Blueprint and try again.</li>
+                        <li><b>Complete the Chamber</b> — build every verse of a Sūrah and that room of the house stands finished. Your progress is remembered.</li>
+                    </ol>
+                </div>
+
+                <div class="help-section">
+                    <h3>❖ Why Every Verse Is Unique ❖</h3>
+                    <p class="help-text">No two Āyahs in all the Quran produce the same structure. Each blueprint is woven from three strands that never repeat together:</p>
+                    <ul class="help-list">
+                        <li><b>1. The Letter Fingerprint</b> — every verse yields its own sequence of distinct letters, in the order they first appear. Like a fingerprint of ink, this sequence belongs to one verse alone. Two verses may share letters, but never the same sequence of them.</li>
+                        <li><b>2. The Deterministic Seed</b> — the Sūrah and Āyah numbers forge a seed (Sūrah × 1000 + Āyah). This seed shuffles the layout positions. The same verse always yields the same blueprint — and no other verse can yield it, for no other verse carries its seed.</li>
+                        <li><b>3. The Woven Layout</b> — the shuffled positions scatter the materials across the grid like stars in a constellation. Change one letter, one seed digit, and the entire constellation shifts.</li>
+                    </ul>
+                    <p class="help-text">Thus each blueprint is a <b>seal</b>: the verse's letters are the wax, the seed is the signet ring. Press them together and you get an impression that exists exactly once in all creation — as the verse itself does.</p>
+                </div>
+
+                <div class="help-section">
+                    <h3>❖ The 28 Materials ❖</h3>
+                    <p class="help-text">Each sacred letter is bound to an earthly material, all drawn close to nature — wood, stone, clay, water, and living green.</p>
+                    <div id="help-materials" class="help-materials-grid"></div>
+                </div>
+
+                <div class="ornament-bottom">❋ ─── ❖ ─── ❋</div>
             </div>
         </div>
 

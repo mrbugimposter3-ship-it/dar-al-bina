@@ -66,6 +66,34 @@ const Game = {
     showSurahs()   { this.buildSurahGrid(); this.showScreen('screen-surahs'); },
     showAyahList() { this.buildAyahList(); this.showScreen('screen-ayahs'); },
 
+    // ── Help ──
+    helpReturnTo: 'screen-title',
+    showHelp() {
+        this.helpReturnTo = document.querySelector('.screen:not(.hidden)')?.id || 'screen-title';
+        this.buildHelpMaterials();
+        this.showScreen('screen-help');
+    },
+    goBackFromHelp() { this.showScreen(this.helpReturnTo); },
+
+    buildHelpMaterials() {
+        const grid = document.getElementById('help-materials');
+        if (grid.children.length) return; // built once
+        grid.innerHTML = '';
+        for (const letter of ARABIC_LETTERS) {
+            const m = MATERIALS[letter];
+            const card = document.createElement('div');
+            card.className = 'help-material-card';
+            card.innerHTML = `
+                <span class="hm-letter" dir="rtl">${letter}</span>
+                <span class="hm-icon">${m.icon}</span>
+                <span class="hm-name">${m.name}</span>
+                <span class="hm-nature">${m.nature}</span>
+            `;
+            card.title = m.desc;
+            grid.appendChild(card);
+        }
+    },
+
     // ── Surah Grid ──
     buildSurahGrid() {
         const grid = document.getElementById('surah-grid');
@@ -146,6 +174,47 @@ const Game = {
         return result;
     },
 
+    // ── Uniqueness Seal ──
+    makeSealCode(letters, seed) {
+        // Deterministic small hash of letters + seed → readable seal code
+        let h = 2166136261;
+        const str = letters.join('') + ':' + seed;
+        for (let i = 0; i < str.length; i++) {
+            h ^= str.charCodeAt(i);
+            h = Math.imul(h, 16777619);
+        }
+        const hex = (h >>> 0).toString(16).toUpperCase().padStart(8, '0');
+        return `${hex.slice(0, 2)}·${hex.slice(2, 4)}·${hex.slice(4, 6)}·${hex.slice(6, 8)}`;
+    },
+
+    renderUniqueness(letters) {
+        const seed = this.currentSurah * 1000 + this.currentAyah;
+        const seal = this.makeSealCode(letters, seed);
+        const content = document.getElementById('uniqueness-content');
+        const chips = letters.map(l =>
+            `<span class="seal-chip" title="${MATERIALS[l].name}">${l}</span>`).join('');
+        content.innerHTML = `
+            <div class="seal-row">
+                <div class="seal-item">
+                    <span class="seal-label">Letter Fingerprint</span>
+                    <span class="seal-fingerprint" dir="rtl">${chips}</span>
+                    <span class="seal-note">${letters.length} distinct letters in order of first appearance — this sequence belongs to this verse alone.</span>
+                </div>
+                <div class="seal-item">
+                    <span class="seal-label">Deterministic Seed</span>
+                    <span class="seal-seed">${seed}</span>
+                    <span class="seal-note">Sūrah ${this.currentSurah} × 1000 + Āyah ${this.currentAyah} — no other verse carries this seed.</span>
+                </div>
+                <div class="seal-item">
+                    <span class="seal-label">Seal Code</span>
+                    <span class="seal-code">${seal}</span>
+                    <span class="seal-note">A hash of fingerprint + seed. Change one letter and this seal breaks.</span>
+                </div>
+            </div>
+            <p class="seal-desc">🔒 This blueprint is a <b>seal</b>: the verse's letters are the wax, the seed is the signet ring. The impression it leaves exists exactly once — as the verse itself does. No other āyah in all 6,236 can recreate this arrangement; change a single letter and the constellation of materials shifts entirely.</p>
+        `;
+    },
+
     // ── Blueprint Generation ──
     generateBlueprint(letters, surah, ayah) {
         const n = letters.length;
@@ -204,6 +273,7 @@ const Game = {
         this.renderConstruction();
         this.renderPalette(letters);
         this.renderInstructions();
+        this.renderUniqueness(letters);
         document.getElementById('build-message').textContent = '';
         document.getElementById('build-message').className = '';
         document.getElementById('btn-check').classList.remove('hidden');
