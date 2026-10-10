@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دار البناء — Dar al-Bina | The Ancient Builder's Game</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Scheherazade+New:wght@400;700&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- ═══════════════ TITLE SCREEN ═══════════════ -->
+        <div id="screen-title" class="screen">
+            <div class="parchment-frame">
+                <div class="ornament-top">✦ ❋ ✦</div>
+                <h1 class="arabic-title">دار البناء</h1>
+                <h2 class="english-title">DĀR AL-BINĀ'</h2>
+                <p class="subtitle">The Ancient Builder's Game</p>
+                <p class="desc">Build the House of Wisdom, verse by verse.<br>
+                Each Sūrah is a chamber. Each Āyah is a stone.<br>
+                Place the materials as the Master's Blueprint shows.</p>
+                <div class="ornament-bottom">❋ ─── ❖ ─── ❋</div>
+                <button class="btn-ancient" onclick="Game.showSurahs()">⟡ Enter the Builder's Guild ⟡</button>
+                <p class="hint-text">— A game of 28 sacred letters &amp; 28 earthly materials —</p>
+            </div>
+        </div>
+
+        <!-- ═══════════════ SURAHS SCREEN ═══════════════ -->
+        <div id="screen-surahs" class="screen hidden">
+            <div class="parchment-frame wide">
+                <div class="header-row">
+                    <button class="btn-back" onclick="Game.showTitle()">← Return</button>
+                    <h2>❋ Choose a Chamber of the House ❋</h2>
+                    <div class="spacer"></div>
+                </div>
+                <p class="subtitle-small">Each Sūrah is a room in the great dwelling. Build them all.</p>
+                <div id="surah-grid"></div>
+            </div>
+        </div>
+
+        <!-- ═══════════════ AYAH LIST SCREEN ═══════════════ -->
+        <div id="screen-ayahs" class="screen hidden">
+            <div class="parchment-frame wide">
+                <div class="header-row">
+                    <button class="btn-back" onclick="Game.showSurahs()">← Return</button>
+                    <h2 id="ayah-list-title">Verses</h2>
+                    <div class="spacer"></div>
+                </div>
+                <div id="progress-bar-wrap">
+                    <div id="progress-bar"></div>
+                    <span id="progress-text"></span>
+                </div>
+                <div id="ayah-list"></div>
+            </div>
+        </div>
+
+        <!-- ═══════════════ BUILD SCREEN ═══════════════ -->
+        <div id="screen-build" class="screen hidden">
+            <div class="build-header">
+                <button class="btn-back" onclick="Game.showAyahList()">← Verses</button>
+                <span id="build-ref" class="build-ref"></span>
+                <span id="build-count" class="build-count"></span>
+            </div>
+
+            <div class="ayah-display">
+                <div class="ornament-line">❖ ─── ❋ ─── ❖</div>
+                <p id="ayah-text" class="ayah-text"></p>
+                <div class="ornament-line">❖ ─── ❋ ─── ❖</div>
+            </div>
+
+            <div class="build-columns">
+                <!-- Blueprint (Guide) -->
+                <div class="blueprint-panel">
+                    <h3>⚜ The Master's Blueprint ⚜</h3>
+                    <p class="panel-sub">Copy this layout</p>
+                    <div id="blueprint-grid" class="build-grid blueprint"></div>
+                </div>
+
+                <!-- Construction (Player) -->
+                <div class="construction-panel">
+                    <h3>⛏ Your Construction Site ⛏</h3>
+                    <p class="panel-sub">Place materials here</p>
+                    <div id="construction-grid" class="build-grid construction"></div>
+                </div>
+            </div>
+
+            <!-- Material Palette -->
+            <div class="palette-panel">
+                <h3>🪵 Materials at Hand</h3>
+                <p class="panel-sub">Click a material, then click a spot on your site</p>
+                <div id="material-palette"></div>
+            </div>
+
+            <!-- Instructions -->
+            <div class="instructions-panel">
+                <h3>📜 The Master's Instructions</h3>
+                <div id="instructions-list"></div>
+            </div>
+
+            <div class="build-footer">
+                <button class="btn-ancient small" id="btn-check" onclick="Game.checkBuild()">⟡ Check Your Work ⟡</button>
+                <button class="btn-ancient small hidden" id="btn-next" onclick="Game.nextAyah()">Next Verse →</button>
+                <span id="build-message"></span>
+            </div>
+        </div>
+
+        <!-- ═══════════════ COMPLETE SCREEN ═══════════════ -->
+        <div id="screen-complete" class="screen hidden">
+            <div class="parchment-frame">
+                <div class="ornament-top">✦ ✧ ✦</div>
+                <h1>🌿 Mubārak! 🌿</h1>
+                <h2>Blessings upon this dwelling!</h2>
+                <p id="complete-text">You have built this chamber well.</p>
+                <button class="btn-ancient" onclick="Game.showSurahs()">⟡ Build Another Chamber ⟡</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="quran-data.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
